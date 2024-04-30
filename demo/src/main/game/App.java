@@ -1,14 +1,12 @@
-package main.com.example;
+package main.game;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import main.com.example.character.Character;
 import java.io.IOException;
+import main.game.character.Character;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -31,13 +29,14 @@ public class App extends Application {
 
 
         character = new Character("/pink-monster/Pink_Monster_Walk_6.png", "/pink-monster/Pink_Monster_Jump_8.png");
-        root.getChildren().add(character);
+        root.getChildren().add(character.getSprite());
+
 
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case A: character.setMovingLeft(true); break;
                 case D: character.setMovingRight(true); break;
-                case W: character.setMovingUp(true); break;
+                case W: case SPACE: character.jump(); break;
                 case S: character.setMovingDown(true); break;
             }
         });
@@ -46,12 +45,9 @@ public class App extends Application {
             switch (event.getCode()) {
                 case A: character.setMovingLeft(false); break;
                 case D: character.setMovingRight(false); break;
-                case W: character.setMovingUp(false); break;
-                case SPACE: character.setMovingUp(false); break;
                 case S: character.setMovingDown(false); break;
             }
         });
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -70,5 +66,3 @@ public class App extends Application {
     }
 
 }
-
-
