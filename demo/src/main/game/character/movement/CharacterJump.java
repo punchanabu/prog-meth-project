@@ -4,7 +4,7 @@ import main.game.character.sprite.Sprite;
 import javafx.geometry.Rectangle2D;
 
 public class CharacterJump implements JumpBehavior {
-    private static final double GRAVITY = 0.2;
+    private static final double GRAVITY = 0.03;
     private double velocityY = 0;
     private boolean isJumping = false;
     private long lastJumpTimeNs = 0;

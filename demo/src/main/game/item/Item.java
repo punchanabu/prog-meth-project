@@ -3,7 +3,6 @@ package main.game.item;
 public abstract class Item {
     private String name;
     private int value;
-
     public Item(String name, int value) {
         this.name = name;
         this.value = value;
@@ -25,5 +24,6 @@ public abstract class Item {
         System.out.println("Name: " + getName());
         System.out.println("Value: " + getValue());
     }
+
 
 }

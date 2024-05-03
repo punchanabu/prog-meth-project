@@ -12,6 +12,7 @@ public class ThrowingAxe extends Axe {
     private double axeWidth = 50;
     private double axeHeight = 50;
 
+
     public ThrowingAxe(String name, int value) {
         super(name, value);
         Image axeImage = new Image("/item/ax.png");
@@ -32,4 +33,6 @@ public class ThrowingAxe extends Axe {
     public double getThrowingSpeed() {
         return throwingSpeed;
     }
+
+
 }

@@ -44,8 +44,13 @@ public class CharacterMovement implements MovementBehavior {
 
     @Override
     public void stop() {
+        movingLeft = false;
+        movingRight = false;
+        movingUp = false;
+        movingDown = false;
         sprite.setCurrentFrame(0);
         sprite.updateSprite();
+
     }
 
     public void setMovingLeft(boolean moving) {
@@ -78,6 +83,7 @@ public class CharacterMovement implements MovementBehavior {
             moveDown();
         }
     }
+
 
     public boolean isMovingLeft() {
         return this.movingLeft;

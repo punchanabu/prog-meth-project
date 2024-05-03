@@ -1,4 +1,7 @@
 package main.game.character;
+import javafx.animation.Animation;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.util.Duration;
@@ -30,7 +33,7 @@ public class Character {
     private long throwCooldown = 50; // Cooldown time in milliseconds
     private boolean canThrowAxe = true;
     private boolean isJumping = false;
-
+    private int health = 100;
     public Character(String imagePathWalking, String imagePathJumping) {
         walkingImage = new Image(imagePathWalking);
         jumpingImage = new Image(imagePathJumping);
@@ -81,7 +84,15 @@ public class Character {
                     parent.getChildren().remove(axe.getSprite());
                     checkThrowCooldown();
                 });
-                axeAnimation.play();
+
+                // Create the RotateTransition animation
+                RotateTransition rotateAnimation = new RotateTransition(Duration.seconds(0.5), axe.getSprite());
+                rotateAnimation.setByAngle(360); // Adjust the rotation angle as needed
+                rotateAnimation.setCycleCount(Animation.INDEFINITE);
+
+                // Start both animations simultaneously
+                ParallelTransition parallelTransition = new ParallelTransition(axeAnimation, rotateAnimation);
+                parallelTransition.play();
             }
         }
     }
@@ -142,5 +153,20 @@ public class Character {
             sprite.setScaleX(2.0);
             sprite.setScaleY(2.0);
         }
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int i) {
+        this.health = i;
+    }
+
+    public int getDamage() {
+        if (equippedItem != null) {
+            return equippedItem.getValue();
+        }
+        return 0;
     }
 }
