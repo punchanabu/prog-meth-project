@@ -11,10 +11,11 @@ import java.io.IOException;
 import main.game.character.Character;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import main.game.character.movement.CharacterMovement;
 
 public class App extends Application {
     private static final int WIDTH = 640;
-    private static final int HEIGHT = 480;
+    private static final int HEIGHT = 520;
     private static Scene scene;
     private Character character;
 
@@ -48,6 +49,10 @@ public class App extends Application {
                 case S:
                     character.setMovingDown(true);
                     break;
+                case J:
+                    boolean movingLeft = ((CharacterMovement) character.getMovementBehavior()).isMovingLeft();
+                    character.throwAxe(scene.getWidth(), movingLeft);
+                    break;
             }
         });
 
@@ -72,6 +77,10 @@ public class App extends Application {
         };
         timer.start();
 
+
+        stage.setResizable(false); // Disable window resizing
+        stage.setWidth(WIDTH); // Set the fixed width
+        stage.setHeight(HEIGHT); // Set the fixed height
 
         stage.setScene(scene);
         stage.show();

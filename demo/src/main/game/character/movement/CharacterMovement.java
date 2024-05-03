@@ -78,4 +78,8 @@ public class CharacterMovement implements MovementBehavior {
             moveDown();
         }
     }
+
+    public boolean isMovingLeft() {
+        return this.movingLeft;
+    }
 }

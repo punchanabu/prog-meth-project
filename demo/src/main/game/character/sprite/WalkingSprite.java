@@ -6,7 +6,7 @@ public class WalkingSprite extends Sprite {
     private static final int FRAME_WIDTH = 30;
     private static final int FRAME_HEIGHT = 100;
     private static final int ANIMATION_LENGTH = 5;
-    private static final int xOffset = 5;
+    private static final int xOffset = 7;
 
     public WalkingSprite(Image image) {
         super(image);

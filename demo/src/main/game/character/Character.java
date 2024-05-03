@@ -1,4 +1,7 @@
 package main.game.character;
+import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.util.Duration;
 import main.game.character.movement.CharacterJump;
 import main.game.character.movement.CharacterMovement;
 import main.game.character.movement.JumpBehavior;
@@ -7,6 +10,10 @@ import main.game.character.sprite.JumpingSprite;
 import main.game.character.sprite.Sprite;
 import main.game.character.sprite.WalkingSprite;
 import javafx.scene.image.Image;
+import main.game.item.Item;
+import main.game.item.Axe;
+import main.game.item.ThrowingAxe;
+import javafx.scene.layout.Pane;
 
 public class Character {
 
@@ -16,16 +23,73 @@ public class Character {
     private JumpBehavior jumpBehavior;
     private Image jumpingImage;
     private Image walkingImage;
+    private Item equippedItem;
+    private ThrowingAxe throwingAxe;
+    private boolean isThrowing = false;
+    private long lastThrowTime = 0;
+    private long throwCooldown = 50; // Cooldown time in milliseconds
+    private boolean canThrowAxe = true;
+    private boolean isJumping = false;
 
     public Character(String imagePathWalking, String imagePathJumping) {
         walkingImage = new Image(imagePathWalking);
         jumpingImage = new Image(imagePathJumping);
-        setWalkingSprite();
+        equipItem(new ThrowingAxe("WoodCutter's Axe", 15));
         sprite.setScaleX(2.0);
         sprite.setScaleY(2.0);
-
         movementBehavior = new CharacterMovement(sprite);
         jumpBehavior = new CharacterJump(sprite);
+    }
+
+    public MovementBehavior getMovementBehavior() {
+        return movementBehavior;
+    }
+
+    public void equipItem(Item item) {
+        equippedItem = item;
+        if (item instanceof Axe) {
+            System.out.println("using axe!");
+            setSprite(new WalkingSprite(new Image("/pink-monster/Pink_Monster_Holding_Axe.png")));
+            if (item instanceof ThrowingAxe) {
+                throwingAxe = (ThrowingAxe) item;
+            }
+        } else {
+            setWalkingSprite();
+        }
+    }
+
+    public void throwAxe(double sceneWidth, boolean movingLeft) {
+        if (canThrowAxe && !isJumping) {
+            canThrowAxe = false;
+            lastThrowTime = System.currentTimeMillis();
+
+            ThrowingAxe axe = new ThrowingAxe("Axe", 10);
+            Pane parent = (Pane) sprite.getParent();
+
+            if (parent != null) {
+                double yOffset = -50;
+                axe.getSprite().setTranslateX(sprite.getTranslateX());
+                axe.getSprite().setTranslateY(sprite.getTranslateY() + yOffset);
+
+                parent.getChildren().add(axe.getSprite());
+
+                // Create the TranslateTransition animation
+                TranslateTransition axeAnimation = new TranslateTransition(Duration.seconds(1), axe.getSprite());
+                double axeDistance = movingLeft ? -sceneWidth : sceneWidth;
+                axeAnimation.setByX(axeDistance - axe.getSprite().getTranslateX());
+                axeAnimation.setOnFinished(event -> {
+                    parent.getChildren().remove(axe.getSprite());
+                    checkThrowCooldown();
+                });
+                axeAnimation.play();
+            }
+        }
+    }
+
+    private void checkThrowCooldown() {
+        if (!canThrowAxe && System.currentTimeMillis() - lastThrowTime >= throwCooldown) {
+            canThrowAxe = true;
+        }
     }
 
     public Sprite getSprite() {
@@ -35,10 +99,11 @@ public class Character {
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
+
     public void jump() {
-        setJumpingSprite();
         if (!jumpBehavior.isJumping()) {
             jumpBehavior.jump();
+            isJumping = true;
         }
     }
 
@@ -60,15 +125,16 @@ public class Character {
     public void update() {
         movementBehavior.update();
         jumpBehavior.update();
-    }
-
-    public void setJumpingSprite() {
-        if (!(sprite instanceof JumpingSprite)) {
-            setSprite(new JumpingSprite(jumpingImage));
-            sprite.setScaleX(2.0);
-            sprite.setScaleY(2.0);
+        if (jumpBehavior.isJumping()) {
+            isJumping = true;
+        } else {
+            isJumping = false;
+        }
+        if (throwingAxe != null) {
+            throwingAxe.getSprite().setTranslateX(throwingAxe.getSprite().getTranslateX() + throwingAxe.getThrowingSpeed());
         }
     }
+
 
     public void setWalkingSprite() {
         if (!(sprite instanceof WalkingSprite)) {
