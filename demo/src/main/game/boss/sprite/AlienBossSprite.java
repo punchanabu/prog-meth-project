@@ -5,6 +5,9 @@ import javafx.animation.Timeline;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import main.game.boss.Boss;
 import main.game.item.ThrowingAxe;
@@ -20,6 +23,8 @@ public class AlienBossSprite extends Boss implements BossSprite {
     private static final int ANIMATION_LENGTH = 6;
     private Queue<Double> positions = new LinkedList<>();
     private final int DELAY_FRAMES = 60; // Delay in terms of number of frames
+    private long lastTurnTime = 0;
+    private final long turnDelay = 500;
 
     public AlienBossSprite(String name, int health, int damage, String imagePath) {
         super(name, health, damage);
@@ -28,12 +33,23 @@ public class AlienBossSprite extends Boss implements BossSprite {
         startAnimation();
     }
 
-    public void followPlayer() {
+    public void followPlayer(double playerX) {
         if (!positions.isEmpty()) {
             double delayedPosition = positions.peek(); // Get the oldest recorded position
             double bossX = spriteImage.getX();
+            double distance = Math.abs(playerX - bossX);
             double move = delayedPosition > bossX ? 1 : -1;
-            spriteImage.setX(bossX + move);
+
+            if (distance < 100) {
+                // If the sprite is close to the player, add a delay before turning
+                if (System.currentTimeMillis() - lastTurnTime >= turnDelay) {
+                    spriteImage.setX(bossX + move);
+                    lastTurnTime = System.currentTimeMillis();
+                }
+            } else {
+                // If the sprite is far from the player, turn immediately
+                spriteImage.setX(bossX + move);
+            }
 
             // Flip the sprite image based on the movement direction
             if (move > 0) {
@@ -54,7 +70,7 @@ public class AlienBossSprite extends Boss implements BossSprite {
     private void initializeSprite() {
         // Assuming each frame is 200x180 pixels and the sprite sheet is correctly formatted
         spriteImage.setFitHeight(400);  // Actual height of one frame
-        spriteImage.setFitWidth(400);   // Actual width of one frame
+        spriteImage.setFitWidth(200);   // Actual width of one frame
         spriteImage.setViewport(new Rectangle2D(0, 0, FRAME_WIDTH, FRAME_HEIGHT));
         spriteImage.setX(400);  // Adjust as necessary
         spriteImage.setY(280);  // Adjust as necessary
@@ -91,4 +107,7 @@ public class AlienBossSprite extends Boss implements BossSprite {
     public boolean isColliding(ThrowingAxe axe) {
         return spriteImage.getBoundsInParent().intersects(axe.getSprite().getBoundsInParent());
     }
+
+
+
 }

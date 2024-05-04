@@ -4,12 +4,12 @@ import main.game.character.sprite.Sprite;
 import javafx.geometry.Rectangle2D;
 
 public class CharacterJump implements JumpBehavior {
-    private static final double GRAVITY = 0.03;
+    private static final double GRAVITY = 0.01;
     private double velocityY = 0;
     private boolean isJumping = false;
     private long lastJumpTimeNs = 0;
     private static final long JUMP_COOLDOWN_NS = 100000000;
-    private static final double JUMP_HEIGHT = 150;
+    private static final double JUMP_HEIGHT = 250;
     private Sprite sprite;
 
     public CharacterJump(Sprite sprite) {

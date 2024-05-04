@@ -1,6 +1,7 @@
 package main.game.character;
 import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.game.boss.Boss;
 import main.game.boss.sprite.BossSprite;
@@ -35,7 +36,7 @@ public class Character {
     private long throwCooldown = 50; // Cooldown time in milliseconds
     private boolean canThrowAxe = true;
     private boolean isJumping = false;
-    private int health = 200;
+    private int health = 500;
     private long lastHitTime = 0;
     private long hitCooldown = 1000;
 
@@ -66,7 +67,7 @@ public class Character {
         }
     }
 
-    public void throwAxe(double sceneWidth, boolean movingLeft, BossSprite boss) {
+    public void throwAxe(double sceneWidth, boolean movingLeft, BossSprite boss, Stage stage) {
         if (canThrowAxe && !isJumping) {
             canThrowAxe = false;
             lastThrowTime = System.currentTimeMillis();
@@ -127,7 +128,7 @@ public class Character {
                                 }
 
                                 // Spawn the next boss
-                                App.spawnBoss();
+                                App.spawnBoss(stage);
                             }
                         }
                     }
@@ -146,7 +147,7 @@ public class Character {
         }
     }
 
-    public void hitByBoss(int damage) {
+    public void hitByBoss(int damage, Stage stage) {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastHitTime >= hitCooldown) {
             health -= damage;
@@ -155,7 +156,7 @@ public class Character {
 
             if (health <= 0) {
                 // Player has died, handle game over logic
-                App.endGame();
+                App.endGame(stage);
                 App.currentState = App.currentState.GAMEOVER;
             }
         }
