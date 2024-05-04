@@ -19,8 +19,6 @@ import main.game.item.ThrowingAxe;
 import javafx.scene.layout.Pane;
 
 public class Character {
-
-
     private Sprite sprite;
     private MovementBehavior movementBehavior;
     private JumpBehavior jumpBehavior;
@@ -34,6 +32,7 @@ public class Character {
     private boolean canThrowAxe = true;
     private boolean isJumping = false;
     private int health = 100;
+
     public Character(String imagePathWalking, String imagePathJumping) {
         walkingImage = new Image(imagePathWalking);
         jumpingImage = new Image(imagePathJumping);

@@ -15,7 +15,7 @@ import java.util.Random;
 public class BossSprite extends Boss {
     private ImageView spriteImage;
     private int currentFrame = 0;
-    private static final int FRAME_WIDTH = 100;
+    private static final int FRAME_WIDTH = 95;
     private static final int FRAME_HEIGHT = 200;
     private static final int ANIMATION_LENGTH = 6;
     private Queue<Double> positions = new LinkedList<>();
@@ -32,7 +32,7 @@ public class BossSprite extends Boss {
         if (!positions.isEmpty()) {
             double delayedPosition = positions.peek(); // Get the oldest recorded position
             double bossX = spriteImage.getX();
-            double move = delayedPosition > bossX ? 1 : -1;
+            double move = delayedPosition > bossX ? 2 : -2;
             spriteImage.setX(bossX + move);
         }
     }
