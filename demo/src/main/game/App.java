@@ -26,6 +26,7 @@ import javafx.scene.image.ImageView;
 import java.util.Random;
 
 import javafx.util.Duration;
+import main.game.ui.HealthBar;
 
 
 public class App extends Application {
@@ -42,7 +43,6 @@ public class App extends Application {
         showStartPage(stage);
     }
 
-
     public void initializeGame(Stage stage)  {
 
         Pane root = new Pane();
@@ -54,15 +54,22 @@ public class App extends Application {
         mapImageView.fitHeightProperty().bind(scene.heightProperty());
         root.getChildren().add(mapImageView);
 
-
         character = new Character("/pink-monster/Pink_Monster_Walk_6.png", "/pink-monster/Pink_Monster_Walk_6.png");
         root.getChildren().add(character.getSprite());
 
+        HealthBar healthBar = new HealthBar(200);
+        healthBar.update(200);
+
+
 
         root.getChildren().add(character.getHealthBar().getProgressBar());
+        root.getChildren().add(healthBar.getProgressBar());
+
         character.getHealthBar().getProgressBar().setLayoutX(10);
         character.getHealthBar().getProgressBar().setLayoutY(50);
-
+        healthBar.getProgressBar().setStyle("-fx-skin:com.example.FlippedProgressBarSkin;");
+        healthBar.getProgressBar().setLayoutY(50);
+        healthBar.getProgressBar().setLayoutX(380);
 
         // Create and add the sword to the scene
         Image itemImage = new Image("/item/ax.png");
@@ -204,13 +211,6 @@ public class App extends Application {
     }
 
     private void showStartPage(Stage stage) {
-
-//        LinearGradient gradient = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
-//                new Stop(0, Color.rgb(58, 19, 92)),
-//                new Stop(0.5, Color.rgb(114, 60, 138)),
-//                new Stop(1, Color.rgb(158, 77, 181)));
-//        Rectangle background = new Rectangle(WIDTH, HEIGHT, gradient);
-
 
         // Create the "Press Start" button
         Text startText = new Text("Press Start");
