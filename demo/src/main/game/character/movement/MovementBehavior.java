@@ -7,5 +7,7 @@ public interface MovementBehavior {
     void moveDown();
     void stop();
     void update();
+
+
 }
 
