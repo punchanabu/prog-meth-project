@@ -10,9 +10,8 @@ import main.game.boss.Boss;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Random;
 
-public class BossSprite extends Boss {
+public class TrollBossSprite extends Boss {
     private ImageView spriteImage;
     private int currentFrame = 0;
     private static final int FRAME_WIDTH = 95;
@@ -21,7 +20,7 @@ public class BossSprite extends Boss {
     private Queue<Double> positions = new LinkedList<>();
     private final int DELAY_FRAMES = 60; // Delay in terms of number of frames
 
-    public BossSprite(String name, int health, int damage, String imagePath) {
+    public TrollBossSprite(String name, int health, int damage, String imagePath) {
         super(name, health, damage);
         this.spriteImage = new ImageView(new Image(imagePath));
         initializeSprite();
@@ -32,7 +31,7 @@ public class BossSprite extends Boss {
         if (!positions.isEmpty()) {
             double delayedPosition = positions.peek(); // Get the oldest recorded position
             double bossX = spriteImage.getX();
-            double move = delayedPosition > bossX ? 2 : -2;
+            double move = delayedPosition > bossX ? 4 : -4;
             spriteImage.setX(bossX + move);
         }
     }
@@ -56,7 +55,7 @@ public class BossSprite extends Boss {
     private void startAnimation() {
         // Reduce the duration if the animation appears too slow
         Timeline animationTimeline = new Timeline(
-                new KeyFrame(Duration.millis(500), e -> updateSprite())); // 200 ms per frame change
+                new KeyFrame(Duration.millis(100), e -> updateSprite())); // 200 ms per frame change
         animationTimeline.setCycleCount(Timeline.INDEFINITE);
         animationTimeline.play();
     }
@@ -66,7 +65,6 @@ public class BossSprite extends Boss {
         int x = currentFrame * FRAME_WIDTH;
         spriteImage.setViewport(new Rectangle2D(x, 0, FRAME_WIDTH, FRAME_HEIGHT));
     }
-
 
     public ImageView getSpriteImage() {
         return spriteImage;
