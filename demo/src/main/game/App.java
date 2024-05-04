@@ -8,7 +8,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import main.game.boss.sprite.BossSprite;
+import main.game.boss.sprite.AlienBossSprite;
+import main.game.boss.sprite.BigBloatedBossSprite;
+import main.game.boss.sprite.CentipedeBossSprite;
+import main.game.boss.sprite.TrollBossSprite;
 import main.game.character.Character;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,7 +22,12 @@ public class App extends Application {
     private static final int HEIGHT = 520;
     private static Scene scene;
     private Character character;
-    private BossSprite boss;
+
+    // Boss
+    private AlienBossSprite alienBoss;
+    private BigBloatedBossSprite bigBoss;
+    private CentipedeBossSprite centipedeBoss;
+    private TrollBossSprite trollBoss;
     private AnimationTimer gameLoop;
     @Override
     public void start(Stage stage) throws IOException {
@@ -33,8 +41,18 @@ public class App extends Application {
         mapImageView.fitHeightProperty().bind(scene.heightProperty());
         root.getChildren().add(mapImageView);
 
-        boss = new BossSprite("Evil Boss", 100, 20, "/boss/AlienBoss/Attack1.png");// Set the initial y-position of the boss
-        root.getChildren().add(boss.getSpriteImage());
+        alienBoss = new AlienBossSprite("Alien Boss", 100, 20, "/boss/AlienBoss/Attack1.png");
+        root.getChildren().add(alienBoss.getSpriteImage());
+
+        bigBoss = new BigBloatedBossSprite("Big Bloated Boss", 100, 20, "/boss/BigBloatedBoss/Big_bloated_attack1.png");
+        root.getChildren().add(bigBoss.getSpriteImage());
+
+        centipedeBoss = new CentipedeBossSprite("Centipede Boss", 100, 20, "/boss/Centipede/Centipede_attack3.png");
+        root.getChildren().add(centipedeBoss.getSpriteImage());
+
+        trollBoss = new TrollBossSprite("Troll Boss", 100, 20, "/boss/TrollBoss/Attack1.png");
+        root.getChildren().add(trollBoss.getSpriteImage());
+
         character = new Character("/pink-monster/Pink_Monster_Walk_6.png", "/pink-monster/Pink_Monster_Jump_8.png");
         root.getChildren().add(character.getSprite());
 
@@ -42,8 +60,18 @@ public class App extends Application {
             @Override
             public void handle(long now) {
                 character.update();
-                boss.recordPlayerPosition(character.getSprite().getTranslateX());
-                boss.followPlayer();
+                alienBoss.recordPlayerPosition(character.getSprite().getTranslateX());
+                alienBoss.followPlayer();
+
+                bigBoss.recordPlayerPosition(character.getSprite().getTranslateX());
+                bigBoss.followPlayer();
+
+                centipedeBoss.recordPlayerPosition(character.getSprite().getTranslateX());
+                centipedeBoss.followPlayer();
+
+                trollBoss.recordPlayerPosition(character.getSprite().getTranslateX());
+                trollBoss.followPlayer();
+
             }
         };
 
