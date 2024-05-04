@@ -12,7 +12,7 @@ public class HealthBar {
         progressBar = new ProgressBar(maxHp);
         progressBar.setPrefWidth(250); // Adjust width as needed
         progressBar.setPrefHeight(30); // Adjust height as needed
-        progressBar.setStyle("-fx-accent: red;");
+        progressBar.setStyle("-fx-accent: #D45454;");
         this.maxHp=maxHp;// Set color style (optional)
     }
 

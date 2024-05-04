@@ -58,7 +58,7 @@ public class App extends Application {
         root.getChildren().add(character.getSprite());
 
         HealthBar healthBar = new HealthBar(200);
-        healthBar.update(200);
+        healthBar.update(120);
 
 
 
@@ -67,7 +67,9 @@ public class App extends Application {
 
         character.getHealthBar().getProgressBar().setLayoutX(10);
         character.getHealthBar().getProgressBar().setLayoutY(50);
-        healthBar.getProgressBar().setStyle("-fx-skin:com.example.FlippedProgressBarSkin;");
+
+        healthBar.getProgressBar().setStyle("-fx-accent: skyblue;");
+        healthBar.getProgressBar().setRotate(180);
         healthBar.getProgressBar().setLayoutY(50);
         healthBar.getProgressBar().setLayoutX(380);
 
