@@ -37,7 +37,7 @@ public class Character {
     private long throwCooldown = 50; // Cooldown time in milliseconds
     private boolean canThrowAxe = true;
     private boolean isJumping = false;
-    private int health = 200;
+    private int health = 500;
     private long lastHitTime = 0;
     private long hitCooldown = 1000;
 

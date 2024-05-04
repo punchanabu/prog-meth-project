@@ -35,7 +35,7 @@ public class CentipedeBossSprite extends Boss implements BossSprite {
             double delayedPosition = positions.peek(); // Get the oldest recorded position
             double bossX = spriteImage.getX();
             double distance = Math.abs(playerX - bossX);
-            double move = delayedPosition > bossX ? 1 : -1;
+            double move = delayedPosition > bossX ? 1.5 : -1.5;
 
             if (distance < 100) {
                 // If the sprite is close to the player, add a delay before turning

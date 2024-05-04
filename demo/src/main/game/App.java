@@ -379,8 +379,8 @@ public class App extends Application {
             case FIRST:
                 System.out.println("123232323232323");
                     // Spawn Big Bloated Boss
-                    bigBoss = new BigBloatedBossSprite("Big Bloated Boss", 100, 20, "/boss/BigBloatedBoss/Big_bloated_attack1.png");
-                    bigBoss.setHealth(100);
+                    bigBoss = new BigBloatedBossSprite("Big Bloated Boss", 200, 20, "/boss/BigBloatedBoss/Big_bloated_attack1.png");
+                    bigBoss.setHealth(200);
                     ((Pane) scene.getRoot()).getChildren().add(bigBoss.getSpriteImage());
                     currentState = State.SECOND;
                 break;
@@ -393,7 +393,7 @@ public class App extends Application {
                 break;
             case THIRD:
                     // Spawn Troll Boss
-                    trollBoss = new TrollBossSprite("Troll Boss", 100, 20, "/boss/TrollBoss/Attack1.png");
+                    trollBoss = new TrollBossSprite("Troll Boss", 100, 30, "/boss/TrollBoss/Attack1.png");
                     trollBoss.setHealth(100);
                     ((Pane) scene.getRoot()).getChildren().add(trollBoss.getSpriteImage());
                     currentState = State.FOURTH;

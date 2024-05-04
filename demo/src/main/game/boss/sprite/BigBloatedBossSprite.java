@@ -66,11 +66,11 @@ public class BigBloatedBossSprite extends Boss implements BossSprite {
 
     private void initializeSprite() {
         // Assuming each frame is 200x180 pixels and the sprite sheet is correctly formatted
-        spriteImage.setFitHeight(400);  // Actual height of one frame
-        spriteImage.setFitWidth(200);   // Actual width of one frame
+        spriteImage.setFitHeight(500);  // Actual height of one frame
+        spriteImage.setFitWidth(300);   // Actual width of one frame
         spriteImage.setViewport(new Rectangle2D(0, 0, FRAME_WIDTH, FRAME_HEIGHT));
         spriteImage.setX(400);  // Adjust as necessary
-        spriteImage.setY(280);  // Adjust as necessary
+        spriteImage.setY(240);  // Adjust as necessary
     }
 
     private void startAnimation() {
