@@ -1,10 +1,9 @@
 package main.game.character;
-import javafx.animation.Animation;
-import javafx.animation.ParallelTransition;
-import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.util.Duration;
+import main.game.boss.Boss;
+import main.game.boss.sprite.BossSprite;
 import main.game.character.movement.CharacterJump;
 import main.game.character.movement.CharacterMovement;
 import main.game.character.movement.JumpBehavior;
@@ -17,6 +16,11 @@ import main.game.item.Item;
 import main.game.item.Axe;
 import main.game.item.ThrowingAxe;
 import javafx.scene.layout.Pane;
+import main.game.App;
+import main.game.boss.sprite.AlienBossSprite;
+import main.game.boss.sprite.TrollBossSprite;
+import main.game.boss.sprite.BigBloatedBossSprite;
+import main.game.boss.sprite.CentipedeBossSprite;
 
 public class Character {
     private Sprite sprite;
@@ -31,7 +35,9 @@ public class Character {
     private long throwCooldown = 50; // Cooldown time in milliseconds
     private boolean canThrowAxe = true;
     private boolean isJumping = false;
-    private int health = 100;
+    private int health = 200;
+    private long lastHitTime = 0;
+    private long hitCooldown = 1000;
 
     public Character(String imagePathWalking, String imagePathJumping) {
         walkingImage = new Image(imagePathWalking);
@@ -60,7 +66,7 @@ public class Character {
         }
     }
 
-    public void throwAxe(double sceneWidth, boolean movingLeft) {
+    public void throwAxe(double sceneWidth, boolean movingLeft, BossSprite boss) {
         if (canThrowAxe && !isJumping) {
             canThrowAxe = false;
             lastThrowTime = System.currentTimeMillis();
@@ -92,6 +98,44 @@ public class Character {
                 // Start both animations simultaneously
                 ParallelTransition parallelTransition = new ParallelTransition(axeAnimation, rotateAnimation);
                 parallelTransition.play();
+
+                // Continuously check for collisions during the axe's movement
+                AnimationTimer collisionCheck = new AnimationTimer() {
+                    @Override
+                    public void handle(long now) {
+                        if (boss.isColliding(axe)) {
+                            int currentHealth = boss.getHealth();
+                            int damage = getDamage(); // Get the damage from the equipped item
+                            boss.setHealth(currentHealth - damage);
+                            System.out.println("Sprite health: " + boss.getHealth());
+                            parent.getChildren().remove(axe.getSprite());
+                            this.stop(); // Stop the collision check when a collision occurs
+
+                            if (boss.getHealth() <= 0) {
+                                // Remove the defeated boss from the scene
+                                parent.getChildren().remove(boss.getSpriteImage());
+
+                                // Set the corresponding boss variable to null
+                                if (boss instanceof AlienBossSprite) {
+                                    App.alienBoss = null;
+                                } else if (boss instanceof BigBloatedBossSprite) {
+                                    App.bigBoss = null;
+                                } else if (boss instanceof CentipedeBossSprite) {
+                                    App.centipedeBoss = null;
+                                } else if (boss instanceof TrollBossSprite) {
+                                    App.trollBoss = null;
+                                }
+
+                                // Spawn the next boss
+                                App.spawnBoss();
+                            }
+                        }
+                    }
+                };
+                collisionCheck.start();
+
+                // Stop the collision check when the axe animation finishes
+                parallelTransition.setOnFinished(event -> collisionCheck.stop());
             }
         }
     }
@@ -99,6 +143,21 @@ public class Character {
     private void checkThrowCooldown() {
         if (!canThrowAxe && System.currentTimeMillis() - lastThrowTime >= throwCooldown) {
             canThrowAxe = true;
+        }
+    }
+
+    public void hitByBoss(int damage) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastHitTime >= hitCooldown) {
+            health -= damage;
+            System.out.println("Hit by the boss! Health: " + health);
+            lastHitTime = currentTime;
+
+            if (health <= 0) {
+                // Player has died, handle game over logic
+                App.endGame();
+                App.currentState = App.currentState.GAMEOVER;
+            }
         }
     }
 
@@ -168,4 +227,6 @@ public class Character {
         }
         return 0;
     }
+
+
 }

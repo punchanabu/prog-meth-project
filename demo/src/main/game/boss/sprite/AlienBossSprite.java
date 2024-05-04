@@ -7,11 +7,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import main.game.boss.Boss;
+import main.game.item.ThrowingAxe;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class AlienBossSprite extends Boss {
+public class AlienBossSprite extends Boss implements BossSprite {
     private ImageView spriteImage;
     private int currentFrame = 0;
     private static final int FRAME_WIDTH = 95;
@@ -31,8 +32,15 @@ public class AlienBossSprite extends Boss {
         if (!positions.isEmpty()) {
             double delayedPosition = positions.peek(); // Get the oldest recorded position
             double bossX = spriteImage.getX();
-            double move = delayedPosition > bossX ? 5 : -5;
+            double move = delayedPosition > bossX ? 1 : -1;
             spriteImage.setX(bossX + move);
+
+            // Flip the sprite image based on the movement direction
+            if (move > 0) {
+                spriteImage.setScaleX(-1); // Flip to the right
+            } else if (move < 0) {
+                spriteImage.setScaleX(1); // Flip to the left
+            }
         }
     }
 
@@ -78,5 +86,9 @@ public class AlienBossSprite extends Boss {
     @Override
     public void ultimateAttack() {
         // Implement ultimate attack mechanics
+    }
+
+    public boolean isColliding(ThrowingAxe axe) {
+        return spriteImage.getBoundsInParent().intersects(axe.getSprite().getBoundsInParent());
     }
 }

@@ -28,7 +28,7 @@ public abstract class Boss {
     }
 
     public void setHealth(int health) {
-        this.health = health;
+        this.health = Math.max(health, 0);
     }
 
     public void setDamage(int damage) {

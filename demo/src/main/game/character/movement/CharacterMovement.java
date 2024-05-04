@@ -2,7 +2,7 @@ package main.game.character.movement;
 import main.game.character.sprite.Sprite;
 
 public class CharacterMovement implements MovementBehavior {
-    private static final int WIDTH = 640;
+    private static final int WIDTH = 1000;
     private static final int HEIGHT = 550;
     private final double speed = 2;
     private boolean movingLeft = false;

@@ -7,11 +7,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import main.game.boss.Boss;
+import main.game.item.ThrowingAxe;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class CentipedeBossSprite extends Boss {
+public class CentipedeBossSprite extends Boss implements BossSprite {
     private ImageView spriteImage;
     private int currentFrame = 0;
     private static final int FRAME_WIDTH = 72;
@@ -33,6 +34,13 @@ public class CentipedeBossSprite extends Boss {
             double bossX = spriteImage.getX();
             double move = delayedPosition > bossX ? 1 : -1;
             spriteImage.setX(bossX + move);
+
+            // Flip the sprite image based on the movement direction
+            if (move > 0) {
+                spriteImage.setScaleX(-1); // Flip to the right
+            } else if (move < 0) {
+                spriteImage.setScaleX(1); // Flip to the left
+            }
         }
     }
 
@@ -78,5 +86,9 @@ public class CentipedeBossSprite extends Boss {
     @Override
     public void ultimateAttack() {
         // Implement ultimate attack mechanics
+    }
+
+    public boolean isColliding(ThrowingAxe axe) {
+        return spriteImage.getBoundsInParent().intersects(axe.getSprite().getBoundsInParent());
     }
 }
