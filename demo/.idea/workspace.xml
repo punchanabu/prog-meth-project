@@ -2,16 +2,48 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c45c721f-ce10-4328-8552-98514d157aab" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../.idea/libraries/javafx_swt.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/game/ui/HealthBar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen00.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen01.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen02.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen03.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen04.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen05.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen06.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen07.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen08.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen09.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen12.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen13.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen14.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen15.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen16.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen17.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen18.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen19.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen20.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen21.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen22.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen23.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen24.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen25.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen26.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen27.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen28.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen29.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen30.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen31.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen32.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen33.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen34.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen35.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen36.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen37.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen38.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background/gen39.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/game/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/game/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/game/character/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/game/character/Character.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/game/character/movement/MovementBehavior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/game/character/movement/MovementBehavior.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/game/App$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/game/App$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/game/App$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/game/App$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/game/App$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/game/App$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/game/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/game/App.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/game/character/Character.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/game/character/Character.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,8 +60,9 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "jorpor",
     "last_opened_file_path": "/Users/jp/Desktop/prog-meth/prog-meth-project/demo"
   }
 }]]></component>
