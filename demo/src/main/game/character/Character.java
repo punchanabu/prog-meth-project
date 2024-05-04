@@ -22,6 +22,7 @@ import main.game.boss.sprite.AlienBossSprite;
 import main.game.boss.sprite.TrollBossSprite;
 import main.game.boss.sprite.BigBloatedBossSprite;
 import main.game.boss.sprite.CentipedeBossSprite;
+import main.game.ui.HealthBar;
 
 public class Character {
     private Sprite sprite;
@@ -36,7 +37,7 @@ public class Character {
     private long throwCooldown = 50; // Cooldown time in milliseconds
     private boolean canThrowAxe = true;
     private boolean isJumping = false;
-    private int health = 500;
+    private int health = 200;
     private long lastHitTime = 0;
     private long hitCooldown = 1000;
 

@@ -18,7 +18,7 @@ public class TrollBossSprite extends Boss implements BossSprite {
     private int currentFrame = 0;
     private static final int FRAME_WIDTH = 95;
     private static final int FRAME_HEIGHT = 200;
-    private static final int ANIMATION_LENGTH = 6;
+    private static int ANIMATION_LENGTH = 6;
     private Queue<Double> positions = new LinkedList<>();
     private final int DELAY_FRAMES = 60; // Delay in terms of number of frames
     private long lastTurnTime = 0;
@@ -102,6 +102,28 @@ public class TrollBossSprite extends Boss implements BossSprite {
     }
 
     public boolean isColliding(ThrowingAxe axe) {
-        return spriteImage.getBoundsInParent().intersects(axe.getSprite().getBoundsInParent());
+        if (spriteImage.getBoundsInParent().intersects(axe.getSprite().getBoundsInParent())) {
+            // Collision detected
+            // Change the sprite image to another image
+            Image newImage = new Image("/boss/TrollBoss/Hurt.png"); // Replace "/boss/AlienBoss/Hurt.png" with the path to your "Hurt.png" image
+            spriteImage.setImage(newImage);
+            setAnimationLength(2);
+            // Schedule to change back to the original image after 1 second
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+                // Change back to the original image
+                Image originalImage = new Image("/boss/TrollBoss/Attack1.png"); // Replace "original_image_path" with the path to your original image
+                spriteImage.setImage(originalImage);
+                setAnimationLength(6);
+            }));
+            timeline.play();
+
+            return true;
+        }
+        return false;
     }
+
+    public void setAnimationLength(int length){
+        ANIMATION_LENGTH = length;
+    }
+
 }

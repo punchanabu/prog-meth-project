@@ -1,9 +1,6 @@
 package main.game;
 
-import javafx.animation.AnimationTimer;
-import javafx.animation.FadeTransition;
-import javafx.animation.ParallelTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -36,6 +33,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import main.game.character.movement.CharacterMovement;
 import main.game.boss.sprite.BossSprite;
+import main.game.ui.HealthBar;
+
 import static main.game.State.START;
 
 public class App extends Application {
@@ -44,6 +43,10 @@ public class App extends Application {
     private static Scene scene;
     private static Character character;
     public static State currentState = START;
+
+    // HealthBar
+    private static HealthBar characterHealthBar;
+    private static HealthBar bossHealthBar;
 
     // Boss
     public static AlienBossSprite alienBoss;
@@ -58,82 +61,9 @@ public class App extends Application {
     }
 
     private static void showStartPage(Stage stage) {
-        LinearGradient gradient = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
-                new Stop(0, Color.rgb(58, 19, 92)),
-                new Stop(0.5, Color.rgb(114, 60, 138)),
-                new Stop(1, Color.rgb(158, 77, 181)));
-        Rectangle background = new Rectangle(WIDTH, HEIGHT, gradient);
-
-
-        // Create the moon
-        Pane moonPane = new Pane();
-
-// Create the moon
-        Circle moon = new Circle(50, Color.rgb(255, 255, 204));
-        moon.setEffect(new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.5), 10, 0.1, 0, 0));
-
-// Create the moon craters
-        Circle crater1 = new Circle(5, Color.rgb(211, 211, 211));
-        crater1.setTranslateX(15);
-        crater1.setTranslateY(-15);
-
-        Circle crater2 = new Circle(3, Color.rgb(211, 211, 211));
-        crater2.setTranslateX(20);
-        crater2.setTranslateY(10);
-
-// Create the golden glow effect
-        Glow glow = new Glow(0.8);
-        glow.setLevel(0.7);
-        glow.setInput(new GaussianBlur(1.5));
-
-        Lighting lighting = new Lighting();
-        lighting.setLight(new javafx.scene.effect.Light.Distant(45, 45, Color.rgb(255, 228, 138)));
-        lighting.setSurfaceScale(5.0);
-        lighting.setContentInput(glow);
-
-        moonPane.setEffect(lighting);
-        moonPane.getChildren().addAll(moon, crater1, crater2);
-
-        moonPane.setTranslateX(550);
-        moonPane.setTranslateY(70);
-
-        // Create the stars
-        Circle star1 = new Circle(3, Color.WHITE);
-        star1.setTranslateX(50);
-        star1.setTranslateY(100);
-
-        Circle star2 = new Circle(3, Color.WHITE);
-        star2.setTranslateX(600);
-        star2.setTranslateY(200);
-
-        // Create the clouds
-        Ellipse cloud1 = new Ellipse(80, 30);
-        cloud1.setFill(Color.WHITE);
-        cloud1.setTranslateX(100);
-        cloud1.setTranslateY(100);
-
-        Ellipse cloud2 = new Ellipse(60, 20);
-        cloud2.setFill(Color.WHITE);
-        cloud2.setTranslateX(150);
-        cloud2.setTranslateY(115);
-
-        Ellipse cloud3 = new Ellipse(40, 15);
-        cloud3.setFill(Color.WHITE);
-        cloud3.setTranslateX(130);
-        cloud3.setTranslateY(105);
-
-        Ellipse cloud4 = new Ellipse(60, 25);
-        cloud4.setFill(Color.WHITE);
-        cloud4.setTranslateX(400);
-        cloud4.setTranslateY(400);
-
-        Ellipse cloud5 = new Ellipse(40, 20);
-        cloud5.setFill(Color.WHITE);
-        cloud5.setTranslateX(440);
-        cloud5.setTranslateY(415);
 
         // Create the "Press Start" button
-        Text startText = new Text("Start Game");
+        Text startText = new Text("Press Start");
         startText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         startText.setFill(Color.WHITE);
 
@@ -151,31 +81,39 @@ public class App extends Application {
 
         StackPane buttonContainer = new StackPane(buttonBackground, buttonFill, startText);
         buttonContainer.setAlignment(Pos.CENTER);
-        buttonContainer.setTranslateX(400);
-        buttonContainer.setTranslateY(230);
+        buttonContainer.setTranslateX(390);
+        buttonContainer.setTranslateY(250);
         buttonContainer.setOnMouseClicked(event -> {
             initGame(stage);
         });
 
-        // Create animations
-        FadeTransition fadeCloud1 = new FadeTransition(Duration.millis(3000), cloud1);
-        fadeCloud1.setFromValue(0.0);
-        fadeCloud1.setToValue(1.0);
-        fadeCloud1.setCycleCount(TranslateTransition.INDEFINITE);
-        fadeCloud1.setAutoReverse(true);
 
-        FadeTransition fadeCloud2 = new FadeTransition(Duration.millis(3000), cloud4);
-        fadeCloud2.setFromValue(0.0);
-        fadeCloud2.setToValue(1.0);
-        fadeCloud2.setCycleCount(TranslateTransition.INDEFINITE);
-        fadeCloud2.setAutoReverse(true);
-        fadeCloud2.setDelay(Duration.millis(1500));
-
-        ParallelTransition cloudAnimation = new ParallelTransition(fadeCloud1, fadeCloud2);
-        cloudAnimation.play();
 
         // Create a root pane to hold all the elements
-        Pane root = new Pane(background, moonPane, star1, star2, cloud1, cloud2, cloud3,cloud4,cloud5, buttonContainer);
+
+        Pane root = new Pane();
+
+        // Load the first frame of the animation
+        ImageView animationView = new ImageView(new Image(App.class.getResource("/background/gen00.jpg").toExternalForm()));
+        animationView.setFitWidth(WIDTH);
+        animationView.setFitHeight(HEIGHT);
+        root.getChildren().add(animationView);
+        root.getChildren().add(buttonContainer);
+
+
+        // Array of image paths for the animation
+        String[] imagePaths = {
+                "/background/gen00.jpg","/background/gen02.jpg","/background/gen04.jpg","/background/gen06.jpg","/background/gen08.jpg","/background/gen10.jpg","/background/gen12.jpg","/background/gen14.jpg","/background/gen16.jpg","/background/gen18.jpg","/background/gen20.jpg","/background/gen22.jpg","/background/gen24.jpg","/background/gen26.jpg","/background/gen28.jpg","/background/gen30.jpg","/background/gen32.jpg","/background/gen34.jpg","/background/gen36.jpg","/background/gen38.jpg"
+        };
+
+        // Timeline for animation loop
+        Timeline animationTimeline = new Timeline(new KeyFrame(Duration.millis(200), event -> {
+            int currentIndex = findImageIndex(animationView.getImage().getUrl(), imagePaths);
+            int nextIndex = (currentIndex + 1) % imagePaths.length;
+            animationView.setImage(new Image(App.class.getResource(imagePaths[nextIndex]).toExternalForm()));
+        }));
+        animationTimeline.setCycleCount(Animation.INDEFINITE);
+        animationTimeline.play();
 
         // Create the scene and set it on the stage
         Scene scene = new Scene(root,WIDTH,HEIGHT);
@@ -186,7 +124,16 @@ public class App extends Application {
         stage.show();
     }
 
+    private static int findImageIndex(String imageUrl, String[] imagePaths) {
+        for (int i = 0; i < imagePaths.length; i++) {
+            if (imageUrl.endsWith(imagePaths[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
     public static void initGame(Stage stage) {
+
         Pane root = new Pane();
         scene = new Scene(root, WIDTH, HEIGHT);
         // Load and set the background image
@@ -196,16 +143,43 @@ public class App extends Application {
         mapImageView.fitHeightProperty().bind(scene.heightProperty());
         root.getChildren().add(mapImageView);
 
+
+
+
         // Spawing the Boss
         spawnBoss(stage);
 
         character = new Character("/pink-monster/Pink_Monster_Walk_6.png", "/pink-monster/Pink_Monster_Jump_8.png");
         root.getChildren().add(character.getSprite());
 
+
+        HealthBar bossHealthBar = new HealthBar("Boss", 100, Color.RED);
+        HealthBar characterHealthBar = new HealthBar("Player", 100, Color.LIGHTGREEN);
+
+
+
+        root.getChildren().addAll(characterHealthBar.getProgressBar(), bossHealthBar.getProgressBar());
+
+        // Position health bars
+        characterHealthBar.getProgressBar().setLayoutX(20);
+        characterHealthBar.getProgressBar().setLayoutY(20);
+        bossHealthBar.getProgressBar().setLayoutX(WIDTH - 270);
+        bossHealthBar.getProgressBar().setLayoutY(20);
+
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 character.update();
+                characterHealthBar.update(character.getHealth());
+                if (alienBoss != null) {
+                    bossHealthBar.update(alienBoss.getHealth());
+                } else if (bigBoss != null) {
+                    bossHealthBar.update(bigBoss.getHealth());
+                } else if (centipedeBoss != null) {
+                    bossHealthBar.update(centipedeBoss.getHealth());
+                } else if (trollBoss != null) {
+                    bossHealthBar.update(trollBoss.getHealth());
+                }
                 if (alienBoss != null) {
                     alienBoss.recordPlayerPosition(character.getSprite().getTranslateX());
                     alienBoss.followPlayer(character.getSprite().getTranslateX());
@@ -302,52 +276,39 @@ public class App extends Application {
     }
 
     private static void showGameOverPage(Stage stage) {
-        // Create a dark semi-transparent background
-        Rectangle background = new Rectangle(WIDTH, HEIGHT, Color.rgb(0, 0, 0, 0.8));
+        Pane root = new Pane();
 
-        // Create the "Game Over" text
-        Text gameOverText = new Text("Game Over");
-        gameOverText.setFont(Font.font("Arial", FontWeight.BOLD, 48));
-        gameOverText.setFill(Color.RED);
+        // Load the first frame of the animation
+        ImageView animationView = new ImageView(new Image(App.class.getResource("/background/gen00.jpg").toExternalForm()));
+        animationView.setFitWidth(WIDTH);
+        animationView.setFitHeight(HEIGHT);
+        root.getChildren().add(animationView);
 
-        // Create the "Play Again" button
-        Text playAgainText = new Text("Play Again");
-        playAgainText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        playAgainText.setFill(Color.WHITE);
 
-        Rectangle buttonBackground = new Rectangle(200, 50, Color.TRANSPARENT);
-        buttonBackground.setEffect(new InnerShadow(10, Color.rgb(0, 0, 0, 0.5)));
 
-        LinearGradient gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE,
-                new Stop(0, Color.rgb(255, 153, 51)),
-                new Stop(0.5, Color.rgb(255, 102, 0)),
-                new Stop(1, Color.rgb(204, 51, 0)));
+        // Array of image paths for the animation
+        String[] imagePaths = {
+                "/GameOver/gameover00.jpg","/GameOver/gameover01.jpg","/GameOver/gameover02.jpg","/GameOver/gameover03.jpg","/GameOver/gameover04.jpg","/GameOver/gameover05.jpg","/GameOver/gameover06.jpg","/GameOver/gameover07.jpg","/GameOver/gameover08.jpg","/GameOver/gameover09.jpg","/GameOver/gameover10.jpg","/GameOver/gameover11.jpg","/GameOver/gameover12.jpg","/GameOver/gameover13.jpg","/GameOver/gameover14.jpg","/GameOver/gameover15.jpg","/GameOver/gameover16.jpg","/GameOver/gameover17.jpg","/GameOver/gameover18.jpg","/GameOver/gameover19.jpg"
+        };
 
-        Rectangle buttonFill = new Rectangle(180, 40, gradient);
-        buttonFill.setArcWidth(20);
-        buttonFill.setArcHeight(20);
-
-        StackPane buttonContainer = new StackPane(buttonBackground, buttonFill, playAgainText);
-        buttonContainer.setAlignment(Pos.CENTER);
-        buttonContainer.setTranslateY(100);
-        buttonContainer.setOnMouseClicked(event -> {
-            currentState = State.START;
-            showStartPage(stage);
+        // Timeline for animation loop
+        Timeline animationTimeline = new Timeline(new KeyFrame(Duration.millis(200), event -> {
+            int currentIndex = findImageIndex(animationView.getImage().getUrl(), imagePaths);
+            int nextIndex = (currentIndex + 1) % imagePaths.length;
+            animationView.setImage(new Image(App.class.getResource(imagePaths[nextIndex]).toExternalForm()));
+        }));
+        animationTimeline.setCycleCount(20);
+        animationTimeline.setOnFinished(event -> {
+            showStartPage(stage); // Transition back to start page
         });
-
-        // Create a VBox to hold the text and button
-        VBox vbox = new VBox(20, gameOverText, buttonContainer);
-        vbox.setAlignment(Pos.CENTER);
-
-        // Create a root pane to hold all the elements
-        Pane root = new Pane(background, vbox);
+        animationTimeline.play();
 
         // Create the scene and set it on the stage
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        Scene scene = new Scene(root,WIDTH,HEIGHT);
 
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.setTitle("Game Over");
+        stage.setTitle("Start Game");
         stage.show();
     }
 
