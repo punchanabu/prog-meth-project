@@ -33,7 +33,7 @@ public class App extends Application {
         mapImageView.fitHeightProperty().bind(scene.heightProperty());
         root.getChildren().add(mapImageView);
 
-        boss = new BossSprite("Evil Boss", 100, 20, "/boss/AlienBoss/Walk.png");// Set the initial y-position of the boss
+        boss = new BossSprite("Evil Boss", 100, 20, "/boss/AlienBoss/Attack1.png");// Set the initial y-position of the boss
         root.getChildren().add(boss.getSpriteImage());
         character = new Character("/pink-monster/Pink_Monster_Walk_6.png", "/pink-monster/Pink_Monster_Jump_8.png");
         root.getChildren().add(character.getSprite());
@@ -44,7 +44,6 @@ public class App extends Application {
                 character.update();
                 boss.recordPlayerPosition(character.getSprite().getTranslateX());
                 boss.followPlayer();
-
             }
         };
 
