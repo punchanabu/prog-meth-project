@@ -8,23 +8,14 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import main.game.boss.Boss;
 import main.game.item.ThrowingAxe;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class AlienBossSpriteAction extends Boss implements BossSpriteAction {
     private ImageView spriteImage;
-    private int currentFrame = 0;
-    private static final int FRAME_WIDTH = 95;
-    private static final int FRAME_HEIGHT = 200;
-    private static int ANIMATION_LENGTH = 6;
     private Queue<Double> positions = new LinkedList<>();
-    private final int DELAY_FRAMES = 60; // Delay in terms of number of frames
-    private long lastTurnTime = 0;
-    private final long turnDelay = 500;
-
-    public AlienBossSpriteAction(String name, int health, int damage, String imagePath) {
-        super(name, health, damage);
+    public AlienBossSpriteAction(String name, int health, int damage, String imagePath, int frameWidth, int frameHeight, int animationLength) {
+        super(name, health, damage, frameWidth, frameHeight, animationLength);
         this.spriteImage = new ImageView(new Image(imagePath));
         initializeSprite();
         startAnimation();
@@ -39,9 +30,9 @@ public class AlienBossSpriteAction extends Boss implements BossSpriteAction {
 
             if (distance < 100) {
                 // If the sprite is close to the player, add a delay before turning
-                if (System.currentTimeMillis() - lastTurnTime >= turnDelay) {
+                if (System.currentTimeMillis() - getLastTurnTime() >= getTurnDelay()) {
                     spriteImage.setX(bossX + move);
-                    lastTurnTime = System.currentTimeMillis();
+                    setLastTurnTime(System.currentTimeMillis());
                 }
             } else {
                 // If the sprite is far from the player, turn immediately
@@ -59,7 +50,7 @@ public class AlienBossSpriteAction extends Boss implements BossSpriteAction {
 
     public void recordPlayerPosition(double playerX) {
         positions.add(playerX);
-        if (positions.size() > DELAY_FRAMES) {
+        if (positions.size() > getDELAY_FRAMES()) {
             positions.poll(); // Remove the oldest position to maintain the size
         }
     }
@@ -68,7 +59,7 @@ public class AlienBossSpriteAction extends Boss implements BossSpriteAction {
         // Assuming each frame is 200x180 pixels and the sprite sheet is correctly formatted
         spriteImage.setFitHeight(400);  // Actual height of one frame
         spriteImage.setFitWidth(200);   // Actual width of one frame
-        spriteImage.setViewport(new Rectangle2D(0, 0, FRAME_WIDTH, FRAME_HEIGHT));
+        spriteImage.setViewport(new Rectangle2D(0, 0, getFRAME_WIDTH(), getFRAME_HEIGHT()));
         spriteImage.setX(400);  // Adjust as necessary
         spriteImage.setY(280);  // Adjust as necessary
     }
@@ -82,9 +73,9 @@ public class AlienBossSpriteAction extends Boss implements BossSpriteAction {
     }
 
     private void updateSprite() {
-        currentFrame = (currentFrame + 1) % ANIMATION_LENGTH;
-        int x = currentFrame * FRAME_WIDTH;
-        spriteImage.setViewport(new Rectangle2D(x, 0, FRAME_WIDTH, FRAME_HEIGHT));
+        setCurrentFrame((getCurrentFrame() + 1) % getANIMATION_LENGTH());
+        int x = getCurrentFrame() * getFRAME_WIDTH();
+        spriteImage.setViewport(new Rectangle2D(x, 0, getFRAME_WIDTH(), getFRAME_HEIGHT()));
     }
 
     public ImageView getSpriteImage() {
@@ -110,10 +101,6 @@ public class AlienBossSpriteAction extends Boss implements BossSpriteAction {
             return true;
         }
         return false;
-    }
-
-    public void setAnimationLength(int length){
-        ANIMATION_LENGTH = length;
     }
 
 

@@ -448,7 +448,9 @@ public class App extends Application {
         switch (currentState) {
             case START:
                 // Spawn Alien Boss
-                alienBoss = new AlienBossSpriteAction("Alien Boss", 100, 20, "/boss/AlienBoss/Attack1.png");
+
+
+                alienBoss = new AlienBossSpriteAction("Alien Boss", 100, 20, "/boss/AlienBoss/Attack1.png", 95, 200, 6);
                 alienBoss.setHealth(100);
                 System.out.println("Spawning Alien Boss!");
                 ((Pane) scene.getRoot()).getChildren().add(alienBoss.getSpriteImage());
@@ -457,23 +459,22 @@ public class App extends Application {
             case FIRST:
                 System.out.println("123232323232323");
                     // Spawn Big Bloated Boss
-                    bigBoss = new BigBloatedBossSpriteAction("Big Bloated Boss", 200, 20, "/boss/BigBloatedBoss/Big_bloated_attack1.png");
+                    bigBoss = new BigBloatedBossSpriteAction("Big Bloated Boss", 200, 20, "/boss/BigBloatedBoss/Big_bloated_attack1.png", 73, 150, 6);
                     bigBoss.setHealth(200);
                     ((Pane) scene.getRoot()).getChildren().add(bigBoss.getSpriteImage());
                     setCurrentState(State.SECOND);
                 break;
             case SECOND:
                     // Spawn Centipede Boss
-                    centipedeBoss = new CentipedeBossSpriteAction("Centipede Boss", 100, 20, "/boss/Centipede/Centipede_attack3.png");
+                    centipedeBoss = new CentipedeBossSpriteAction("Centipede Boss", 100, 20, "/boss/Centipede/Centipede_attack3.png", 72, 300, 6);
                     centipedeBoss.setHealth(100);
                     ((Pane) scene.getRoot()).getChildren().add(centipedeBoss.getSpriteImage());
                     setCurrentState(State.THIRD);
                 break;
             case THIRD:
                     // Spawn Troll Boss
-                    trollBoss = new TrollBossSpriteAction("Troll Boss", 100, 30, "/boss/TrollBoss/Attack1.png");
+                    trollBoss = new TrollBossSpriteAction("Troll Boss", 100, 30, "/boss/TrollBoss/Attack1.png", 95, 200, 6);
                     trollBoss.setHealth(100);
-                    bossHealthBar.update(trollBoss.getHealth());
                     ((Pane) scene.getRoot()).getChildren().add(trollBoss.getSpriteImage());
                     setCurrentState(State.FOURTH);
                 break;

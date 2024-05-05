@@ -13,18 +13,12 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class BigBloatedBossSpriteAction extends Boss implements BossSpriteAction {
-    private ImageView spriteImage;
-    private int currentFrame = 0;
-    private static final int FRAME_WIDTH = 73;
-    private static final int FRAME_HEIGHT = 150;
-    private static int ANIMATION_LENGTH = 6;
-    private Queue<Double> positions = new LinkedList<>();
-    private final int DELAY_FRAMES = 60; // Delay in terms of number of frames
-    private long lastTurnTime = 0;
-    private final long turnDelay = 500;
 
-    public BigBloatedBossSpriteAction(String name, int health, int damage, String imagePath) {
-        super(name, health, damage);
+    private ImageView spriteImage;
+    private Queue<Double> positions = new LinkedList<>();
+
+    public BigBloatedBossSpriteAction(String name, int health, int damage, String imagePath, int frameWidth, int frameHeight, int animationLength) {
+        super(name, health, damage, frameWidth, frameHeight, animationLength);
         this.spriteImage = new ImageView(new Image(imagePath));
         initializeSprite();
         startAnimation();
@@ -39,9 +33,9 @@ public class BigBloatedBossSpriteAction extends Boss implements BossSpriteAction
 
             if (distance < 100) {
                 // If the sprite is close to the player, add a delay before turning
-                if (System.currentTimeMillis() - lastTurnTime >= turnDelay) {
+                if (System.currentTimeMillis() - getLastTurnTime() >= getTurnDelay()) {
                     spriteImage.setX(bossX + move);
-                    lastTurnTime = System.currentTimeMillis();
+                    setLastTurnTime(System.currentTimeMillis());
                 }
             } else {
                 // If the sprite is far from the player, turn immediately
@@ -59,18 +53,18 @@ public class BigBloatedBossSpriteAction extends Boss implements BossSpriteAction
 
     public void recordPlayerPosition(double playerX) {
         positions.add(playerX);
-        if (positions.size() > DELAY_FRAMES) {
+        if (positions.size() > getDELAY_FRAMES()) {
             positions.poll(); // Remove the oldest position to maintain the size
         }
     }
 
     private void initializeSprite() {
         // Assuming each frame is 200x180 pixels and the sprite sheet is correctly formatted
-        spriteImage.setFitHeight(500);  // Actual height of one frame
+        spriteImage.setFitHeight(300);  // Actual height of one frame
         spriteImage.setFitWidth(300);   // Actual width of one frame
-        spriteImage.setViewport(new Rectangle2D(0, 0, FRAME_WIDTH, FRAME_HEIGHT));
+        spriteImage.setViewport(new Rectangle2D(0, 0, getFRAME_WIDTH(), getFRAME_HEIGHT()));
         spriteImage.setX(400);  // Adjust as necessary
-        spriteImage.setY(240);  // Adjust as necessary
+        spriteImage.setY(190);  // Adjust as necessary
     }
 
     private void startAnimation() {
@@ -82,9 +76,9 @@ public class BigBloatedBossSpriteAction extends Boss implements BossSpriteAction
     }
 
     private void updateSprite() {
-        currentFrame = (currentFrame + 1) % ANIMATION_LENGTH;
-        int x = currentFrame * FRAME_WIDTH;
-        spriteImage.setViewport(new Rectangle2D(x, 0, FRAME_WIDTH, FRAME_HEIGHT));
+        setCurrentFrame((getCurrentFrame() + 1) % getANIMATION_LENGTH());
+        int x = getCurrentFrame() * getFRAME_WIDTH();
+        spriteImage.setViewport(new Rectangle2D(x, 0, getFRAME_WIDTH(), getFRAME_WIDTH()));
     }
 
     public ImageView getSpriteImage() {
@@ -111,10 +105,5 @@ public class BigBloatedBossSpriteAction extends Boss implements BossSpriteAction
         }
         return false;
     }
-
-    public void setAnimationLength(int length){
-        ANIMATION_LENGTH = length;
-    }
-
 
 }
