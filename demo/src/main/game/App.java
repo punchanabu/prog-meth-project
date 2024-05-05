@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.effect.*;
 import javafx.scene.layout.Pane;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.scene.layout.StackPane;
@@ -16,9 +17,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -44,6 +46,11 @@ public class App extends Application {
     private static Character character;
     public static State currentState = START;
 
+    private static MediaPlayer startMediaPlayer;
+    private static MediaPlayer fightMediaPlayer;
+    private static MediaPlayer axeMediaPlayer;
+    private static MediaPlayer winMediaPlayer;
+    private static MediaPlayer loseMediaPlayer;
     // HealthBar
     private static HealthBar characterHealthBar;
     private static HealthBar bossHealthBar;
@@ -61,7 +68,15 @@ public class App extends Application {
     }
 
     private static void showStartPage(Stage stage) {
-
+        if (fightMediaPlayer != null) {
+            fightMediaPlayer.stop();
+        }
+        if (winMediaPlayer != null) {
+            winMediaPlayer.stop();
+        }
+        if (loseMediaPlayer != null) {
+            loseMediaPlayer.stop();
+        }
         // Create the "Press Start" button
         Text startText = new Text("Press Start");
         startText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -115,6 +130,14 @@ public class App extends Application {
         animationTimeline.setCycleCount(Animation.INDEFINITE);
         animationTimeline.play();
 
+        // Play the background music
+        String musicFile = "demo/src/main/resources/sound/start.mp3";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        startMediaPlayer = new MediaPlayer(sound);
+        startMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        startMediaPlayer.setVolume(0.5);
+        startMediaPlayer.play();
+
         // Create the scene and set it on the stage
         Scene scene = new Scene(root,WIDTH,HEIGHT);
 
@@ -133,7 +156,36 @@ public class App extends Application {
         return -1;
     }
     public static void initGame(Stage stage) {
+        if (startMediaPlayer != null) {
+            startMediaPlayer.stop();
+        }
+        // Load Axe Sound
+        String axeSoundFile = "demo/src/main/resources/sound/axe.mp3";
+        Media axeSound = new Media(new File(axeSoundFile).toURI().toString());
+        axeMediaPlayer = new MediaPlayer(axeSound);
+        axeMediaPlayer.setStartTime(Duration.ZERO);
+        axeMediaPlayer.setStopTime(Duration.millis(100));  // Set stop time if known duration
+        axeMediaPlayer.setCycleCount(1);
+        axeMediaPlayer.setVolume(0.5); // Set volume as needed
+        axeMediaPlayer.setAutoPlay(false); // Do not auto play
 
+        String winSoundFile = "demo/src/main/resources/sound/win.mp3";
+        Media winSound = new Media(new File(winSoundFile).toURI().toString());
+        winMediaPlayer = new MediaPlayer(winSound);
+          // Set stop time if known duration
+
+        // Load lose sound
+        String loseSoundFile = "demo/src/main/resources/sound/lost.mp3";
+        Media loseSound = new Media(new File(loseSoundFile).toURI().toString());
+        loseMediaPlayer = new MediaPlayer(loseSound);
+
+        // Play the background music
+        String musicFile = "demo/src/main/resources/sound/fight.mp3";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        fightMediaPlayer = new MediaPlayer(sound);
+        fightMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        fightMediaPlayer.setVolume(0.5);
+        fightMediaPlayer.play();
         Pane root = new Pane();
         scene = new Scene(root, WIDTH, HEIGHT);
         // Load and set the background image
@@ -153,8 +205,8 @@ public class App extends Application {
         root.getChildren().add(character.getSprite());
 
 
-        HealthBar bossHealthBar = new HealthBar("Boss", 100, Color.RED);
-        HealthBar characterHealthBar = new HealthBar("Player", 100, Color.LIGHTGREEN);
+        bossHealthBar = new HealthBar("Boss", 100, Color.RED);
+        characterHealthBar = new HealthBar("Player", 100, Color.LIGHTGREEN);
 
 
 
@@ -229,14 +281,17 @@ public class App extends Application {
                     break;
                 case J:
                     boolean movingLeft = ((CharacterMovement) character.getMovementBehavior()).isMovingLeft();
-
                     if (alienBoss != null) {
+                        playAxeSound();
                         character.throwAxe(scene.getWidth(), movingLeft, alienBoss, stage);
                     } else if (bigBoss != null) {
+                        playAxeSound();
                         character.throwAxe(scene.getWidth(), movingLeft, bigBoss, stage);
                     } else if (centipedeBoss != null) {
+                        playAxeSound();
                         character.throwAxe(scene.getWidth(), movingLeft, centipedeBoss, stage);
                     } else if (trollBoss != null) {
+                        playAxeSound();
                         character.throwAxe(scene.getWidth(), movingLeft, trollBoss, stage);
                     }
             }
@@ -276,6 +331,16 @@ public class App extends Application {
     }
 
     private static void showGameOverPage(Stage stage) {
+        if (fightMediaPlayer != null) {
+            fightMediaPlayer.stop();
+        }
+
+        // Play the lose sound
+        if (loseMediaPlayer != null) {
+            loseMediaPlayer.seek(Duration.ZERO);
+            loseMediaPlayer.play();
+        }
+
         Pane root = new Pane();
 
         // Load the first frame of the animation
@@ -313,6 +378,17 @@ public class App extends Application {
     }
 
     private static void showWinPage(Stage stage) {
+
+        if (fightMediaPlayer != null) {
+            fightMediaPlayer.stop();
+        }
+
+        // Play the win sound
+        if (winMediaPlayer != null) {
+            winMediaPlayer.seek(Duration.ZERO);
+            winMediaPlayer.play();
+        }
+
         // Create a gradient background
         LinearGradient gradient = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
                 new Stop(0, Color.rgb(255, 215, 0)),
@@ -324,6 +400,8 @@ public class App extends Application {
         Text winText = new Text("You Win!");
         winText.setFont(Font.font("Arial", FontWeight.BOLD, 48));
         winText.setFill(Color.WHITE);
+        winText.setTranslateX(390);
+        winText.setTranslateY(200);
 
         // Create the "Play Again" button
         Text playAgainText = new Text("Play Again");
@@ -344,7 +422,8 @@ public class App extends Application {
 
         StackPane buttonContainer = new StackPane(buttonBackground, buttonFill, playAgainText);
         buttonContainer.setAlignment(Pos.CENTER);
-        buttonContainer.setTranslateY(100);
+        buttonContainer.setTranslateX(390);
+        buttonContainer.setTranslateY(250);
         buttonContainer.setOnMouseClicked(event -> {
             currentState = State.START;
             showStartPage(stage);
@@ -395,6 +474,7 @@ public class App extends Application {
                     // Spawn Troll Boss
                     trollBoss = new TrollBossSprite("Troll Boss", 100, 30, "/boss/TrollBoss/Attack1.png");
                     trollBoss.setHealth(100);
+                    bossHealthBar.update(trollBoss.getHealth());
                     ((Pane) scene.getRoot()).getChildren().add(trollBoss.getSpriteImage());
                     currentState = State.FOURTH;
                 break;
@@ -428,6 +508,12 @@ public class App extends Application {
 
     private static boolean isCollidingWithBoss(BossSprite boss) {
         return character.getSprite().getBoundsInParent().intersects(boss.getSpriteImage().getBoundsInParent());
+    }
+
+    private static void playAxeSound() {
+        axeMediaPlayer.stop();
+        axeMediaPlayer.seek(Duration.ZERO);
+        axeMediaPlayer.play();
     }
 
 }
