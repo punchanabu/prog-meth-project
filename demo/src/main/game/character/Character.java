@@ -1,15 +1,13 @@
 package main.game.character;
 import javafx.animation.*;
-import javafx.application.Platform;
 import javafx.stage.Stage;
+import main.game.State;
 import javafx.util.Duration;
-import main.game.boss.Boss;
-import main.game.boss.sprite.BossSprite;
+import main.game.boss.sprite.BossSpriteAction;
 import main.game.character.movement.CharacterJump;
 import main.game.character.movement.CharacterMovement;
 import main.game.character.movement.JumpBehavior;
 import main.game.character.movement.MovementBehavior;
-import main.game.character.sprite.JumpingSprite;
 import main.game.character.sprite.Sprite;
 import main.game.character.sprite.WalkingSprite;
 import javafx.scene.image.Image;
@@ -18,11 +16,10 @@ import main.game.item.Axe;
 import main.game.item.ThrowingAxe;
 import javafx.scene.layout.Pane;
 import main.game.App;
-import main.game.boss.sprite.AlienBossSprite;
-import main.game.boss.sprite.TrollBossSprite;
-import main.game.boss.sprite.BigBloatedBossSprite;
-import main.game.boss.sprite.CentipedeBossSprite;
-import main.game.ui.HealthBar;
+import main.game.boss.sprite.AlienBossSpriteAction;
+import main.game.boss.sprite.TrollBossSpriteAction;
+import main.game.boss.sprite.BigBloatedBossSpriteAction;
+import main.game.boss.sprite.CentipedeBossSpriteAction;
 
 public class Character {
     private Sprite sprite;
@@ -32,7 +29,6 @@ public class Character {
     private Image walkingImage;
     private Item equippedItem;
     private ThrowingAxe throwingAxe;
-    private boolean isThrowing = false;
     private long lastThrowTime = 0;
     private long throwCooldown = 50; // Cooldown time in milliseconds
     private boolean canThrowAxe = true;
@@ -68,7 +64,7 @@ public class Character {
         }
     }
 
-    public void throwAxe(double sceneWidth, boolean movingLeft, BossSprite boss, Stage stage) {
+    public void throwAxe(double sceneWidth, boolean movingLeft, BossSpriteAction boss, Stage stage) {
         if (canThrowAxe && !isJumping) {
             canThrowAxe = false;
             lastThrowTime = System.currentTimeMillis();
@@ -118,13 +114,13 @@ public class Character {
                                 parent.getChildren().remove(boss.getSpriteImage());
 
                                 // Set the corresponding boss variable to null
-                                if (boss instanceof AlienBossSprite) {
+                                if (boss instanceof AlienBossSpriteAction) {
                                     App.alienBoss = null;
-                                } else if (boss instanceof BigBloatedBossSprite) {
+                                } else if (boss instanceof BigBloatedBossSpriteAction) {
                                     App.bigBoss = null;
-                                } else if (boss instanceof CentipedeBossSprite) {
+                                } else if (boss instanceof CentipedeBossSpriteAction) {
                                     App.centipedeBoss = null;
-                                } else if (boss instanceof TrollBossSprite) {
+                                } else if (boss instanceof TrollBossSpriteAction) {
                                     App.trollBoss = null;
                                 }
 
@@ -158,7 +154,7 @@ public class Character {
             if (health <= 0) {
                 // Player has died, handle game over logic
                 App.endGame(stage);
-                App.currentState = App.currentState.GAMEOVER;
+                App.setCurrentState(State.GAMEOVER);
             }
         }
     }

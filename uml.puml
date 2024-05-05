@@ -1,0 +1,305 @@
+@startuml
+abstract class main.game.item.Item {
+- String name
+- int value
++ String getName()
++ int getValue()
+}
+interface main.game.boss.sprite.BossSpriteAction {
+~ void followPlayer(double)
+~ void recordPlayerPosition(double)
+~ boolean isColliding(ThrowingAxe)
+~ ImageView getSpriteImage()
+~ int getHealth()
+~ void setHealth(int)
+}
+class main.game.item.sprite.ThrowingAxeSprite {
+- double width
+- double height
++ void updateSprite()
++ Rectangle2D getFrameViewPort()
+}
+class main.game.boss.sprite.AlienBossSpriteAction {
+- ImageView spriteImage
+- int currentFrame
+- {static} int FRAME_WIDTH
+- {static} int FRAME_HEIGHT
+- {static} int ANIMATION_LENGTH
+- Queue<Double> positions
+- int DELAY_FRAMES
+- long lastTurnTime
+- long turnDelay
++ void followPlayer(double)
++ void recordPlayerPosition(double)
+- void initializeSprite()
+- void startAnimation()
+- void updateSprite()
++ ImageView getSpriteImage()
++ boolean isColliding(ThrowingAxe)
++ void setAnimationLength(int)
+}
+class main.game.boss.sprite.TrollBossSpriteAction {
+- ImageView spriteImage
+- int currentFrame
+- {static} int FRAME_WIDTH
+- {static} int FRAME_HEIGHT
+- {static} int ANIMATION_LENGTH
+- Queue<Double> positions
+- int DELAY_FRAMES
+- long lastTurnTime
+- long turnDelay
++ void followPlayer(double)
++ void recordPlayerPosition(double)
+- void initializeSprite()
+- void startAnimation()
+- void updateSprite()
++ ImageView getSpriteImage()
++ boolean isColliding(ThrowingAxe)
++ void setAnimationLength(int)
+}
+abstract class main.game.boss.Boss {
+- String name
+- int health
+- int damage
++ String getName()
++ void setName(String)
++ int getHealth()
++ int getDamage()
++ void setHealth(int)
++ void setDamage(int)
+}
+class main.game.boss.sprite.CentipedeBossSpriteAction {
+- ImageView spriteImage
+- int currentFrame
+- {static} int FRAME_WIDTH
+- {static} int FRAME_HEIGHT
+- {static} int ANIMATION_LENGTH
+- Queue<Double> positions
+- int DELAY_FRAMES
+- long lastTurnTime
+- long turnDelay
++ void followPlayer(double)
++ void recordPlayerPosition(double)
+- void initializeSprite()
+- void startAnimation()
+- void updateSprite()
++ ImageView getSpriteImage()
++ boolean isColliding(ThrowingAxe)
++ void setAnimationLength(int)
+}
+class main.game.item.ThrowingAxe {
+- Sprite sprite
+- double throwingSpeed
+- double axeWidth
+- double axeHeight
++ Sprite getSprite()
++ void setSprite(Sprite)
++ double getThrowingSpeed()
+}
+interface main.game.character.movement.MovementBehavior {
+~ void moveLeft()
+~ void moveRight()
+~ void moveUp()
+~ void moveDown()
+~ void update()
+}
+class main.game.character.movement.CharacterJump {
+- {static} double GRAVITY
+- double velocityY
+- boolean isJumping
+- long lastJumpTimeNs
+- {static} long JUMP_COOLDOWN_NS
+- {static} double JUMP_HEIGHT
+- Sprite sprite
++ Sprite getSprite()
++ void setSprite(Sprite)
++ void setLastJumpTimeNs(long)
++ void setJumping(boolean)
++ void setVelocityY(double)
++ void jump()
++ boolean isJumping()
++ void update()
+- boolean onGround()
+}
+class main.game.ui.HealthBar {
+- {static} String HP_LABEL_STYLE
+- ProgressBar progressBar
+- Label nameLabel
+- Label hpLabel
+- int maxHp
+- int currentHp
+- ProgressBar createProgressBar(Color)
+- Label createNameLabel(String)
+- Label createHpLabel()
+- void configureLayout()
++ void update(int)
+- void updateLabels()
++ ProgressBar getProgressBar()
+- String toHex(Color)
+}
+class main.game.item.Axe {
+}
+class main.game.character.sprite.JumpingSprite {
+- {static} int FRAME_WIDTH
+- {static} int FRAME_HEIGHT
+- {static} int ANIMATION_LENGTH
++ void updateSprite()
++ Rectangle2D getFrameViewPort()
+}
+class main.game.App {
+- {static} int WIDTH
+- {static} int HEIGHT
+- {static} Scene scene
+- {static} Character character
++ {static} State currentState
+- {static} MediaPlayer startMediaPlayer
+- {static} MediaPlayer fightMediaPlayer
+- {static} MediaPlayer axeMediaPlayer
+- {static} MediaPlayer winMediaPlayer
+- {static} MediaPlayer loseMediaPlayer
+- {static} HealthBar characterHealthBar
+- {static} HealthBar bossHealthBar
++ {static} AlienBossSpriteAction alienBoss
++ {static} BigBloatedBossSpriteAction bigBoss
++ {static} CentipedeBossSpriteAction centipedeBoss
++ {static} TrollBossSpriteAction trollBoss
+- {static} AnimationTimer gameLoop
++ void start(Stage)
+- {static} void showStartPage(Stage)
+- {static} int findImageIndex(String,String[])
++ {static} void initGame(Stage)
++ {static} void main(String[])
+- {static} void showGameOverPage(Stage)
+- {static} void showWinPage(Stage)
++ {static} void spawnBoss(Stage)
++ {static} void endGame(Stage)
+- {static} boolean isCollidingWithBoss(BossSpriteAction)
+- {static} void playAxeSound()
++ {static} void setCurrentState(State)
+}
+class main.game.boss.sprite.BigBloatedBossSpriteAction {
+- ImageView spriteImage
+- int currentFrame
+- {static} int FRAME_WIDTH
+- {static} int FRAME_HEIGHT
+- {static} int ANIMATION_LENGTH
+- Queue<Double> positions
+- int DELAY_FRAMES
+- long lastTurnTime
+- long turnDelay
++ void followPlayer(double)
++ void recordPlayerPosition(double)
+- void initializeSprite()
+- void startAnimation()
+- void updateSprite()
++ ImageView getSpriteImage()
++ boolean isColliding(ThrowingAxe)
++ void setAnimationLength(int)
+}
+enum main.game.State {
++  START
++  FIRST
++  SECOND
++  THIRD
++  FOURTH
++  GAMEOVER
++  WIN
+}
+abstract class main.game.character.sprite.Sprite {
+# int currentFrame
+# {static} long FRAME_DURATION_NS
+# long lastFrameUpdateNs
++ {abstract}void updateSprite()
++ {abstract}Rectangle2D getFrameViewPort()
++ int getCurrentFrame()
++ void setCurrentFrame(int)
++ long getLastFrameUpdateNs()
++ void setLastFrameUpdateNs(long)
+}
+class main.game.character.Character {
+- Sprite sprite
+- MovementBehavior movementBehavior
+- JumpBehavior jumpBehavior
+- Image jumpingImage
+- Image walkingImage
+- Item equippedItem
+- ThrowingAxe throwingAxe
+- long lastThrowTime
+- long throwCooldown
+- boolean canThrowAxe
+- boolean isJumping
+- int health
+- long lastHitTime
+- long hitCooldown
++ MovementBehavior getMovementBehavior()
++ void equipItem(Item)
++ void throwAxe(double,boolean,BossSpriteAction,Stage)
+- void checkThrowCooldown()
++ void hitByBoss(int,Stage)
++ Sprite getSprite()
++ void setSprite(Sprite)
++ void jump()
++ void setMovingLeft(boolean)
++ void setMovingRight(boolean)
++ void setMovingDown(boolean)
++ void update()
++ void setWalkingSprite()
++ int getHealth()
++ void setHealth(int)
++ int getDamage()
+}
+class main.game.character.movement.CharacterMovement {
+- {static} int WIDTH
+- {static} int HEIGHT
+- double speed
+- boolean movingLeft
+- boolean movingRight
+- boolean movingUp
+- boolean movingDown
+- Sprite sprite
++ boolean isMovingLeft()
++ Sprite getSprite()
++ void setSprite(Sprite)
++ void setMovingLeft(boolean)
++ void setMovingRight(boolean)
++ void setMovingDown(boolean)
++ void moveLeft()
++ void moveRight()
++ void moveUp()
++ void moveDown()
++ void update()
+}
+interface main.game.character.movement.JumpBehavior {
+~ void jump()
+~ boolean isJumping()
+~ void update()
+}
+class main.game.character.sprite.WalkingSprite {
+- {static} int FRAME_WIDTH
+- {static} int FRAME_HEIGHT
+- {static} int ANIMATION_LENGTH
+- {static} int xOffset
++ void updateSprite()
++ Rectangle2D getFrameViewPort()
+}
+
+
+main.game.character.sprite.Sprite <|-- main.game.item.sprite.ThrowingAxeSprite
+main.game.boss.sprite.BossSpriteAction <|.. main.game.boss.sprite.AlienBossSpriteAction
+main.game.boss.Boss <|-- main.game.boss.sprite.AlienBossSpriteAction
+main.game.boss.sprite.BossSpriteAction <|.. main.game.boss.sprite.TrollBossSpriteAction
+main.game.boss.Boss <|-- main.game.boss.sprite.TrollBossSpriteAction
+main.game.boss.sprite.BossSpriteAction <|.. main.game.boss.sprite.CentipedeBossSpriteAction
+main.game.boss.Boss <|-- main.game.boss.sprite.CentipedeBossSpriteAction
+main.game.item.Axe <|-- main.game.item.ThrowingAxe
+main.game.character.movement.JumpBehavior <|.. main.game.character.movement.CharacterJump
+javafx.scene.layout.StackPane <|-- main.game.ui.HealthBar
+main.game.item.Item <|-- main.game.item.Axe
+main.game.character.sprite.Sprite <|-- main.game.character.sprite.JumpingSprite
+javafx.application.Application <|-- main.game.App
+main.game.boss.sprite.BossSpriteAction <|.. main.game.boss.sprite.BigBloatedBossSpriteAction
+main.game.boss.Boss <|-- main.game.boss.sprite.BigBloatedBossSpriteAction
+javafx.scene.image.ImageView <|-- main.game.character.sprite.Sprite
+main.game.character.movement.MovementBehavior <|.. main.game.character.movement.CharacterMovement
+main.game.character.sprite.Sprite <|-- main.game.character.sprite.WalkingSprite
+@enduml

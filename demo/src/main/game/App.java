@@ -26,15 +26,15 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import main.game.boss.sprite.AlienBossSprite;
-import main.game.boss.sprite.BigBloatedBossSprite;
-import main.game.boss.sprite.CentipedeBossSprite;
-import main.game.boss.sprite.TrollBossSprite;
+import main.game.boss.sprite.AlienBossSpriteAction;
+import main.game.boss.sprite.BigBloatedBossSpriteAction;
+import main.game.boss.sprite.CentipedeBossSpriteAction;
+import main.game.boss.sprite.TrollBossSpriteAction;
 import main.game.character.Character;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import main.game.character.movement.CharacterMovement;
-import main.game.boss.sprite.BossSprite;
+import main.game.boss.sprite.BossSpriteAction;
 import main.game.ui.HealthBar;
 
 import static main.game.State.START;
@@ -56,15 +56,14 @@ public class App extends Application {
     private static HealthBar bossHealthBar;
 
     // Boss
-    public static AlienBossSprite alienBoss;
-    public static BigBloatedBossSprite bigBoss;
-    public static CentipedeBossSprite centipedeBoss;
-    public static TrollBossSprite trollBoss;
+    public static AlienBossSpriteAction alienBoss;
+    public static BigBloatedBossSpriteAction bigBoss;
+    public static CentipedeBossSpriteAction centipedeBoss;
+    public static TrollBossSpriteAction trollBoss;
     private static AnimationTimer gameLoop;
 
     public void start(Stage stage) throws IOException {
         showStartPage(stage);
-
     }
 
     private static void showStartPage(Stage stage) {
@@ -449,45 +448,39 @@ public class App extends Application {
         switch (currentState) {
             case START:
                 // Spawn Alien Boss
-                alienBoss = new AlienBossSprite("Alien Boss", 100, 20, "/boss/AlienBoss/Attack1.png");
+                alienBoss = new AlienBossSpriteAction("Alien Boss", 100, 20, "/boss/AlienBoss/Attack1.png");
                 alienBoss.setHealth(100);
                 System.out.println("Spawning Alien Boss!");
                 ((Pane) scene.getRoot()).getChildren().add(alienBoss.getSpriteImage());
-                currentState = State.FIRST;
+                setCurrentState(State.FIRST);
                 break;
             case FIRST:
                 System.out.println("123232323232323");
                     // Spawn Big Bloated Boss
-                    bigBoss = new BigBloatedBossSprite("Big Bloated Boss", 200, 20, "/boss/BigBloatedBoss/Big_bloated_attack1.png");
+                    bigBoss = new BigBloatedBossSpriteAction("Big Bloated Boss", 200, 20, "/boss/BigBloatedBoss/Big_bloated_attack1.png");
                     bigBoss.setHealth(200);
                     ((Pane) scene.getRoot()).getChildren().add(bigBoss.getSpriteImage());
-                    currentState = State.SECOND;
+                    setCurrentState(State.SECOND);
                 break;
             case SECOND:
                     // Spawn Centipede Boss
-                    centipedeBoss = new CentipedeBossSprite("Centipede Boss", 100, 20, "/boss/Centipede/Centipede_attack3.png");
+                    centipedeBoss = new CentipedeBossSpriteAction("Centipede Boss", 100, 20, "/boss/Centipede/Centipede_attack3.png");
                     centipedeBoss.setHealth(100);
                     ((Pane) scene.getRoot()).getChildren().add(centipedeBoss.getSpriteImage());
-                    currentState = State.THIRD;
+                    setCurrentState(State.THIRD);
                 break;
             case THIRD:
                     // Spawn Troll Boss
-                    trollBoss = new TrollBossSprite("Troll Boss", 100, 30, "/boss/TrollBoss/Attack1.png");
+                    trollBoss = new TrollBossSpriteAction("Troll Boss", 100, 30, "/boss/TrollBoss/Attack1.png");
                     trollBoss.setHealth(100);
                     bossHealthBar.update(trollBoss.getHealth());
                     ((Pane) scene.getRoot()).getChildren().add(trollBoss.getSpriteImage());
-                    currentState = State.FOURTH;
+                    setCurrentState(State.FOURTH);
                 break;
             case FOURTH:
                     // All bosses defeated, end the game
-                currentState = State.WIN;
-                    endGame(stage);
-                break;
-            case GAMEOVER:
-                // Handle game over logic
-                break;
-            case WIN:
-                // Handle game win logic
+                setCurrentState(State.WIN);
+                endGame(stage);
                 break;
         }
     }
@@ -506,7 +499,7 @@ public class App extends Application {
 
     }
 
-    private static boolean isCollidingWithBoss(BossSprite boss) {
+    private static boolean isCollidingWithBoss(BossSpriteAction boss) {
         return character.getSprite().getBoundsInParent().intersects(boss.getSpriteImage().getBoundsInParent());
     }
 
@@ -516,4 +509,7 @@ public class App extends Application {
         axeMediaPlayer.play();
     }
 
+    public static void setCurrentState(State state) {
+        currentState = state;
+    }
 }

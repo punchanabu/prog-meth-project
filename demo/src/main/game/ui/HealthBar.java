@@ -1,18 +1,14 @@
 package main.game.ui;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.paint.Color;
-
-
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class HealthBar extends StackPane {
+    private static final String HP_LABEL_STYLE = "-fx-text-fill: white; -fx-font-size: 16px;";
+
     private final ProgressBar progressBar;
     private final Label nameLabel;
     private final Label hpLabel;
@@ -23,25 +19,39 @@ public class HealthBar extends StackPane {
         this.maxHp = maxHp;
         this.currentHp = maxHp;
 
-        progressBar = new ProgressBar(1); // Set initial progress to 1 (full health)
-        progressBar.setPrefWidth(250); // Adjust width as needed
-        progressBar.setPrefHeight(30); // Adjust height as needed
-        progressBar.setStyle("-fx-accent: " + toHex(barColor) + ";"); // Convert the color to hex and apply as style
+        progressBar = createProgressBar(barColor);
+        nameLabel = createNameLabel(name);
+        hpLabel = createHpLabel();
+        updateLabels();
 
-        nameLabel = new Label(name);
-        nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;"); // Set text color and size
+        configureLayout();
+    }
 
-        hpLabel = new Label();
-        hpLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;"); // Set text color and size
-        nameLabel.setLayoutX(10);  // Set x position relative to the progress bar
+    private ProgressBar createProgressBar(Color barColor) {
+        ProgressBar progressBar = new ProgressBar(1);
+        progressBar.setPrefWidth(250);
+        progressBar.setPrefHeight(30);
+        progressBar.setStyle("-fx-accent: " + toHex(barColor) + ";");
+        return progressBar;
+    }
+
+    private Label createNameLabel(String name) {
+        Label nameLabel = new Label(name);
+        nameLabel.setStyle(HP_LABEL_STYLE);
+        nameLabel.setLayoutX(10);
         nameLabel.setLayoutY(2);
-        updateLabels(); // Initial update for labels
+        return nameLabel;
+    }
 
-        // Stack labels on top of progress bar
-        StackPane.setAlignment(nameLabel, Pos.CENTER_LEFT); // Align name to the left
-        StackPane.setAlignment(hpLabel, Pos.CENTER_RIGHT); // Align health status to the right
+    private Label createHpLabel() {
+        Label hpLabel = new Label();
+        hpLabel.setStyle(HP_LABEL_STYLE);
+        return hpLabel;
+    }
 
-        // Add nodes to StackPane
+    private void configureLayout() {
+        StackPane.setAlignment(nameLabel, Pos.CENTER_LEFT);
+        StackPane.setAlignment(hpLabel, Pos.CENTER_RIGHT);
         this.getChildren().addAll(progressBar, nameLabel, hpLabel);
     }
 

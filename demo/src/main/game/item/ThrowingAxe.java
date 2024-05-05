@@ -19,17 +19,16 @@ public class ThrowingAxe extends Axe {
         ImageView axeImageView = new ImageView(axeImage);
         axeImageView.setFitWidth(axeWidth);
         axeImageView.setFitHeight(axeHeight);
-        sprite = new ThrowingAxeSprite(axeImage, axeWidth, axeHeight);
+        setSprite(new ThrowingAxeSprite(axeImage, axeWidth, axeHeight));
     }
 
     public Sprite getSprite() {
         return sprite;
     }
 
-    public void throwAxe() {
-        sprite.setTranslateX(sprite.getTranslateX() + throwingSpeed);
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
     }
-
     public double getThrowingSpeed() {
         return throwingSpeed;
     }

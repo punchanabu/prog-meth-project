@@ -5,7 +5,6 @@ public interface MovementBehavior {
     void moveRight();
     void moveUp();
     void moveDown();
-    void stop();
     void update();
 }
 

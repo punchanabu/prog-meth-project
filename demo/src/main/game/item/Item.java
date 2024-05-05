@@ -16,14 +16,4 @@ public abstract class Item {
         return value;
     }
 
-    // Abstract method to be implemented by subclasses
-    public abstract void use();
-
-    // Example of a concrete method
-    public void displayInfo() {
-        System.out.println("Name: " + getName());
-        System.out.println("Value: " + getValue());
-    }
-
-
 }

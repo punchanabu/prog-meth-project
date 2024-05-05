@@ -16,6 +16,30 @@ public class CharacterMovement implements MovementBehavior {
         this.sprite = sprite;
     }
 
+    public boolean isMovingLeft() {
+        return this.movingLeft;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public void setMovingLeft(boolean moving) {
+        this.movingLeft = moving;
+    }
+
+    public void setMovingRight(boolean moving) {
+        this.movingRight = moving;
+    }
+
+    public void setMovingDown(boolean moving) {
+        this.movingDown = moving;
+    }
+
     @Override
     public void moveLeft() {
         sprite.setTranslateX(sprite.getTranslateX() - speed);
@@ -42,33 +66,6 @@ public class CharacterMovement implements MovementBehavior {
         sprite.updateSprite();
     }
 
-    @Override
-    public void stop() {
-        movingLeft = false;
-        movingRight = false;
-        movingUp = false;
-        movingDown = false;
-        sprite.setCurrentFrame(0);
-        sprite.updateSprite();
-
-    }
-
-    public void setMovingLeft(boolean moving) {
-        this.movingLeft = moving;
-    }
-
-    public void setMovingRight(boolean moving) {
-        this.movingRight = moving;
-    }
-
-    public void setMovingUp(boolean moving) {
-        this.movingUp = moving;
-    }
-
-    public void setMovingDown(boolean moving) {
-        this.movingDown = moving;
-    }
-
     public void update() {
         if (movingLeft && sprite.getTranslateX() - speed >= 0) {
             moveLeft();
@@ -85,7 +82,4 @@ public class CharacterMovement implements MovementBehavior {
     }
 
 
-    public boolean isMovingLeft() {
-        return this.movingLeft;
-    }
 }

@@ -16,12 +16,32 @@ public class CharacterJump implements JumpBehavior {
         this.sprite = sprite;
     }
 
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public void setLastJumpTimeNs(long lastJumpTimeNs) {
+        this.lastJumpTimeNs = lastJumpTimeNs;
+    }
+
+    public void setJumping(boolean jumping) {
+        isJumping = jumping;
+    }
+
+    public void setVelocityY(double velocityY) {
+        this.velocityY = velocityY;
+    }
+
     public void jump() {
         long now = System.nanoTime();
         if (!isJumping && (now - lastJumpTimeNs) >= JUMP_COOLDOWN_NS) {
             sprite.setTranslateY(sprite.getTranslateY() - JUMP_HEIGHT);
-            isJumping = true;
-            lastJumpTimeNs = now;
+            setJumping(true);
+            setLastJumpTimeNs(now);
             sprite.updateSprite();
         }
     }
@@ -32,11 +52,11 @@ public class CharacterJump implements JumpBehavior {
 
     public void update() {
         if (!onGround()) {
-            velocityY += GRAVITY;
+            setVelocityY(velocityY + GRAVITY);
             sprite.setTranslateY(sprite.getTranslateY() + velocityY);
         } else {
-            velocityY = 0;
-            isJumping = false;
+            setVelocityY(0);
+            setJumping(false);
         }
     }
 

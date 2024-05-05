@@ -14,10 +14,10 @@ public class WalkingSprite extends Sprite {
 
     public void updateSprite() {
         long now = System.nanoTime();
-        if ((now - lastFrameUpdateNs) >= FRAME_DURATION_NS) {
-            currentFrame = (currentFrame + 1) % ANIMATION_LENGTH;
+        if ((now - getLastFrameUpdateNs()) >= FRAME_DURATION_NS) {
+            setCurrentFrame((currentFrame + 1) % ANIMATION_LENGTH);
             setViewport(getFrameViewPort());
-            lastFrameUpdateNs = now;
+            setLastFrameUpdateNs(now);
         }
     }
 

@@ -15,6 +15,9 @@ public abstract class Boss {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
     public int getHealth() {
         return health;
     }
@@ -23,23 +26,11 @@ public abstract class Boss {
         return damage;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setHealth(int health) {
         this.health = Math.max(health, 0);
     }
 
     public void setDamage(int damage) {
         this.damage = damage;
-    }
-
-    public abstract void specialAttack();
-
-    public abstract void ultimateAttack();
-
-    public void defeat() {
-        System.out.println(name + " has been defeated!");
     }
 }
