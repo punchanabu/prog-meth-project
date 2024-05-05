@@ -205,7 +205,7 @@ public class App extends Application {
 
 
         bossHealthBar = new HealthBar("Boss", 100, Color.RED);
-        characterHealthBar = new HealthBar("Player", 100, Color.LIGHTGREEN);
+        characterHealthBar = new HealthBar("Player", 500, Color.LIGHTGREEN);
 
 
 

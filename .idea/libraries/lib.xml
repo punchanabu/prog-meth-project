@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="lib">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../prog-meth/javafx-module/lib" />
+      <root url="file://$PROJECT_DIR$/../Cedt/prog-meth/javafx-module/lib" />
     </CLASSES>
     <JAVADOC />
     <NATIVE>
-      <root url="file://$PROJECT_DIR$/../prog-meth/javafx-module/lib" />
+      <root url="file://$PROJECT_DIR$/../Cedt/prog-meth/javafx-module/lib" />
     </NATIVE>
     <SOURCES />
-    <jarDirectory url="file://$PROJECT_DIR$/../prog-meth/javafx-module/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../Cedt/prog-meth/javafx-module/lib" recursive="false" />
   </library>
 </component>
