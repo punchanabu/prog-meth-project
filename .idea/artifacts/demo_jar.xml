@@ -20,6 +20,7 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/../Cedt/prog-meth/javafx-module/lib/javafx.controls.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../Cedt/prog-meth/javafx-module/lib/javafx.graphics.jar" path-in-jar="/" />
       <element id="module-source" name="demo" />
+      <element id="dir-copy" path="$PROJECT_DIR$/demo/src/main/resources" />
     </root>
   </artifact>
 </component>

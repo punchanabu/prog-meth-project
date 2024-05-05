@@ -339,6 +339,32 @@ public class App extends Application {
             loseMediaPlayer.seek(Duration.ZERO);
             loseMediaPlayer.play();
         }
+        if (gameLoop != null) {
+            gameLoop.stop();
+        }
+
+        character.setHealth(500);
+
+        // Remove the boss from the scene
+        if (alienBoss != null) {
+            ((Pane) scene.getRoot()).getChildren().remove(alienBoss.getSpriteImage());
+            alienBoss = null;
+        }
+        if (bigBoss != null) {
+            ((Pane) scene.getRoot()).getChildren().remove(bigBoss.getSpriteImage());
+            bigBoss = null;
+        }
+        if (centipedeBoss != null) {
+            ((Pane) scene.getRoot()).getChildren().remove(centipedeBoss.getSpriteImage());
+            centipedeBoss = null;
+        }
+        if (trollBoss != null) {
+            ((Pane) scene.getRoot()).getChildren().remove(trollBoss.getSpriteImage());
+            trollBoss = null;
+        }
+
+        // Reset the current state to START
+        setCurrentState(State.START);
 
         Pane root = new Pane();
 
@@ -387,6 +413,35 @@ public class App extends Application {
             winMediaPlayer.seek(Duration.ZERO);
             winMediaPlayer.play();
         }
+
+        // Stop the game loop
+        if (gameLoop != null) {
+            gameLoop.stop();
+        }
+
+        // Reset the character's health
+        character.setHealth(500);
+
+        // Remove the boss from the scene
+        if (alienBoss != null) {
+            ((Pane) scene.getRoot()).getChildren().remove(alienBoss.getSpriteImage());
+            alienBoss = null;
+        }
+        if (bigBoss != null) {
+            ((Pane) scene.getRoot()).getChildren().remove(bigBoss.getSpriteImage());
+            bigBoss = null;
+        }
+        if (centipedeBoss != null) {
+            ((Pane) scene.getRoot()).getChildren().remove(centipedeBoss.getSpriteImage());
+            centipedeBoss = null;
+        }
+        if (trollBoss != null) {
+            ((Pane) scene.getRoot()).getChildren().remove(trollBoss.getSpriteImage());
+            trollBoss = null;
+        }
+
+        // Reset the current state to START
+        setCurrentState(State.START);
 
         // Create a gradient background
         LinearGradient gradient = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
