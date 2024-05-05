@@ -77,7 +77,7 @@ public class App extends Application {
             loseMediaPlayer.stop();
         }
         // Create the "Press Start" button
-        Text startText = new Text("Press Start");
+        Text startText = new Text("Start Game !");
         startText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         startText.setFill(Color.WHITE);
 
